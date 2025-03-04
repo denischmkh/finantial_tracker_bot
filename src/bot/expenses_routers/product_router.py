@@ -25,8 +25,14 @@ async def products_menu(callback: CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == 'statistic', ProductExpensesStates.in_menu)
 async def check_statistic_for_products_expenses(callback: CallbackQuery, state: FSMContext):
     statistic = ""
+    full_sum = 0
     await state.set_state(ProductExpensesStates.check_expenses)
-    await callback.message.edit_caption(caption='Ваша статистика\n\n' + statistic,
+    expenses_from_db = await ProductCrud.get_expenses(callback.from_user.id)
+    for expense in expenses_from_db:
+        statistic += f'{expense.created.strftime("%d %B")} {expense.created.strftime("%H:%M")} - {expense.summa} грн.\n' \
+                     f'--------------------\n'
+        full_sum += expense.summa
+    await callback.message.edit_caption(caption='Ваша статистика\n\n' + statistic + f'\n\nПолная сумма: {full_sum}',
                                         reply_markup=back_markup())
 
 
@@ -66,7 +72,8 @@ async def confirm_expense(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_caption(caption='Рассходы на продукты 🛒',
                                         reply_markup=products_markup())
     await state.set_state(ProductExpensesStates.in_menu)
-
+    msg = await callback.message.answer(text=f'Вы успешно добавили трату в размере {expense_sum}✅')
+    asyncio.create_task(delete_message(chat_id=callback.from_user.id, message_id=msg.message_id, time=5))
 
 
 @router.callback_query(F.data == 'cancel', ProductExpensesStates.confirmation_of_consumption)

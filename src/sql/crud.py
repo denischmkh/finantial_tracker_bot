@@ -43,3 +43,16 @@ class ProductCrud:
                 print(e)
                 await session.rollback()
                 return False
+
+    @staticmethod
+    async def get_expenses(user_id: int) -> list[ProductExpenses] | None:
+        async with get_session() as session:
+            try:
+                stmt = _sql.select(ProductExpenses).where(ProductExpenses.user_id==user_id)
+                result = await session.execute(stmt)
+                user_expenses = result.scalars().all()
+                return user_expenses
+            except Exception as e:
+                print(e)
+                await session.rollback()
+                return None

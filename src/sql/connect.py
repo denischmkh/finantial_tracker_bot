@@ -1,15 +1,15 @@
 
 import logging
+import sys
 from contextlib import asynccontextmanager
 
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
-from src.config import DATABASE_URL
+from config import DATABASE_URL
 
 DATABASE_URL = DATABASE_URL.split('://')
 DATABASE_URL[0] += '+asyncpg'
 DATABASE_URL = "://".join(DATABASE_URL)
-
 
 
 DATABASE_URL_WITH_ASYNC_ENGINE = DATABASE_URL
