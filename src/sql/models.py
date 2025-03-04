@@ -2,7 +2,7 @@ import uuid
 
 from bot.utils import get_kiev_time
 from sql.connect import Base
-from sqlalchemy import DATETIME, Integer, String, DECIMAL, UUID, Column, ForeignKey
+from sqlalchemy import DATETIME, Integer, String, DECIMAL, UUID, Column, ForeignKey, TIMESTAMP
 
 
 class BaseModel(Base):
@@ -18,21 +18,21 @@ class User(BaseModel):
 class ProductExpenses(BaseModel):
     __tablename__ = "product_expenses"
     summa = Column(DECIMAL(10, 2), nullable=False)
-    created = Column(DATETIME, default=get_kiev_time)
+    created = Column(TIMESTAMP(timezone=False), default=get_kiev_time)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
 
 
 class OtherExpenses(BaseModel):
     __tablename__ = "other_expenses"
     summa = Column(DECIMAL(10, 2), nullable=False)
-    created = Column(DATETIME, default=get_kiev_time)
+    created = Column(TIMESTAMP(timezone=False), default=get_kiev_time)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
 
 
 class TransportExpenses(BaseModel):
     __tablename__ = "transport_expenses"
     summa = Column(DECIMAL(10, 2), nullable=False)
-    created = Column(DATETIME, default=get_kiev_time)
+    created = Column(TIMESTAMP(timezone=False), default=get_kiev_time)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
 
 
@@ -40,12 +40,12 @@ class EveryMonthExpenses(BaseModel):
     __tablename__ = 'every_month_expenses'
     title = Column(String, nullable=False)
     summa = Column(DECIMAL(10, 2), nullable=False)
-    created = Column(DATETIME, default=get_kiev_time)
+    created = Column(TIMESTAMP(timezone=False), default=get_kiev_time)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
 
 
 class Earnings(BaseModel):
     __tablename__ = 'earnings'
     summa = Column(DECIMAL(10, 2), nullable=False)
-    created = Column(DATETIME, default=get_kiev_time)
+    created = Column(TIMESTAMP(timezone=False), default=get_kiev_time)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)

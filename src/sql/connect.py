@@ -30,9 +30,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 async def init_db_models():
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-        logging.info('База данных удалена')
         await conn.run_sync(Base.metadata.create_all)
         logging.info('База данных создана')
+
 
 
