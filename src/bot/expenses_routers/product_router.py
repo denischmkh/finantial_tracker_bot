@@ -7,7 +7,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from bot.bot import bot
-from bot.keyboards import products_markup, back_markup, start_markup, confirmation_of_consumption_markup
+from bot.keyboards import in_expenses_menu_markup, back_markup, start_markup, confirmation_of_consumption_markup
 from bot.states import ProductExpensesStates
 from bot.utils import delete_message
 from sql.crud import ProductCrud
@@ -19,7 +19,7 @@ router = Router()
 async def products_menu(callback: CallbackQuery, state: FSMContext):
     await state.set_state(ProductExpensesStates.in_menu)
     await callback.message.edit_caption(caption='Рассходы на продукты 🛒',
-                                        reply_markup=products_markup())
+                                        reply_markup=in_expenses_menu_markup())
 
 
 @router.callback_query(F.data == 'statistic', ProductExpensesStates.in_menu)
@@ -70,7 +70,7 @@ async def confirm_expense(callback: CallbackQuery, state: FSMContext):
         return
     await state.set_state(ProductExpensesStates.in_menu)
     await callback.message.edit_caption(caption='Рассходы на продукты 🛒',
-                                        reply_markup=products_markup())
+                                        reply_markup=in_expenses_menu_markup())
     await state.set_state(ProductExpensesStates.in_menu)
     msg = await callback.message.answer(text=f'Вы успешно добавили трату в размере {expense_sum}✅')
     asyncio.create_task(delete_message(chat_id=callback.from_user.id, message_id=msg.message_id, time=5))
@@ -88,7 +88,7 @@ async def cancel_confirmation(callback: CallbackQuery, state: FSMContext):
 async def cancel_append_menu(callback: CallbackQuery, state: FSMContext):
     await state.set_state(ProductExpensesStates.in_menu)
     await callback.message.edit_caption(caption='Рассходы на продукты 🛒',
-                                        reply_markup=products_markup())
+                                        reply_markup=in_expenses_menu_markup())
 
 
 @router.callback_query(F.data == 'back', ProductExpensesStates.in_menu)

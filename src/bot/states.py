@@ -11,6 +11,7 @@ class TransportExpensesStates(StatesGroup):
     in_menu = State()
     check_expenses = State()
     add_expenses = State()
+    confirmation_of_consumption = State()
 
 class EveryMounthExpensesStates(StatesGroup):
     in_menu = State()

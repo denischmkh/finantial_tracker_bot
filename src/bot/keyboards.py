@@ -27,7 +27,7 @@ def back_markup():
     return markup
 
 
-def products_markup():
+def in_expenses_menu_markup():
     statistic = InlineKeyboardButton(text='Статистика за текущий месяц 📊', callback_data='statistic')
     add_expense = InlineKeyboardButton(text='Добавить трату ➕', callback_data='add_expense')
     back = InlineKeyboardButton(text='Назад ↩️', callback_data='back')
